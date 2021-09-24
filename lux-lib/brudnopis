@@ -1,0 +1,116 @@
+#include "lib.hpp"
+
+
+
+
+
+
+
+void exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & vmt, lib::mapTrees * mt, const lux::Unit & un )
+{
+	
+	for ( int i = 0; i < 4; ++i )
+	{
+		lux::Position tPos = mt->tile->pos;
+		
+		switch (i)
+		{
+			case 0:
+			
+				tPos.y -= 1;
+				
+				lux::Cell const * tCell = gameMap.getCellByPos( tPos );
+				
+				if ( tCell->resource == ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				{
+					lib::mapTrees tree;
+						tree.tile = tCell;
+						tree.dist = tCell->pos.distanceTo(un.pos);
+						tree.value = 1;
+						tree.amount += 1;
+						
+					vmt.push_back(tree);
+					
+					mt->value += 1;
+					
+					exploreForest( gm, vmt, vmt.end() - 1, un );
+				}
+			
+			break;
+			
+			case 1:
+			
+				tPos.y += 1;
+				
+				lux::Cell const * tCell = gameMap.getCellByPos( tPos );
+				
+				if ( tCell->resource == ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				{
+					lib::mapTrees tree;
+						tree.tile = tCell;
+						tree.dist = tCell->pos.distanceTo(un.pos);
+						tree.value = 1;
+						tree.amount += 1;
+						
+					vmt.push_back(tree);
+					
+					mt->value += 1;
+					
+					exploreForest( gm, vmt, vmt.end() - 1, un );
+				}
+				
+			break;
+			
+			case 2:
+			
+				tPos.x -= 1;
+				
+				lux::Cell const * tCell = gameMap.getCellByPos( tPos );
+				
+				if ( tCell->resource == ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				{
+					lib::mapTrees tree;
+						tree.tile = tCell;
+						tree.dist = tCell->pos.distanceTo(un.pos);
+						tree.value = 1;
+						tree.amount += 1;
+						
+					vmt.push_back(tree);
+					
+					mt->value += 1;
+					
+					exploreForest( gm, vmt, vmt.end() - 1, un );
+				}
+				
+			break;
+			
+			case 3:
+			
+				tPos.x += 1;
+				
+				lux::Cell const * tCell = gameMap.getCellByPos( tPos );
+				
+				if ( tCell->resource == ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				{
+					lib::mapTrees tree;
+						tree.tile = tCell;
+						tree.dist = tCell->pos.distanceTo(un.pos);
+						tree.value = 1;
+						tree.amount += 1;
+						
+					vmt.push_back(tree);
+					
+					mt->value += 1;
+					
+					exploreForest( gm, vmt, vmt.end() - 1, un );
+				}
+				
+			break;
+			
+			default:
+			break;
+			
+		}
+	}
+}
+

@@ -1,0 +1,6 @@
+*.sh
+Dockerfile
+*.py
+*.gz
+*.[aos]
+*.gch
