@@ -279,3 +279,21 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 	}
 }
 
+/*
+* Feature: research
+*/	
+void research(const lux::Player & player)
+{
+	for ( auto cit : player.cities )
+	{
+		for ( auto citT : cit.second.citytiles )
+		{
+			if ( citT.canAct() && player.researchPoints < (int)lux::GAME_CONSTANTS["PARAMETERS"]["RESEARCH_REQUIREMENTS"]["URANIUM"])
+			{
+				citT.research();
+			}
+		}
+	}
+}
+	
+

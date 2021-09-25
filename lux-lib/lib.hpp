@@ -59,6 +59,9 @@ namespace lib
 		
 		
 	};
+	
+	void research(const lux::Player & player);
+	
 };
 
 
