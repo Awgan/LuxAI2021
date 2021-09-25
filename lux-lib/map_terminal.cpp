@@ -1,6 +1,6 @@
 #include "map_terminal.hpp"
 
-void Map_Terminal::draw( const lux::GameMap & map )
+void Map_Terminal::draw( const lux::GameMap & map ) const
 {
 	std::ofstream Mapka("mapka.txt");
 	
@@ -23,6 +23,7 @@ void Map_Terminal::draw( const lux::GameMap & map )
 					Mapka << 'U';
 					break;
 					default:
+					Mapka << '?';
 					break;
 				}
 			}
@@ -40,3 +41,22 @@ void Map_Terminal::draw( const lux::GameMap & map )
 	
 	Mapka.close();
 }
+
+
+void Map_Terminal::draw( const std::vector<lib::mapTrees> & vmt ) const
+{
+	std::ofstream Mapka("mapka_drzew.txt");
+	
+	for( auto it : vmt )
+	{
+		lux::Position pos = it.tile->pos;
+		Mapka << "(" << pos.x << ";" << pos.y << ")" << '\t';
+		Mapka << "v:" << it.value << '\t';
+		Mapka << "a:" << it.amount << '\n';
+		
+	}
+	Mapka.close();
+}
+
+
+

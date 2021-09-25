@@ -4,7 +4,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "lux/map.hpp"
+#include "../lux/map.hpp"
+#include "../lux/position.hpp"
+#include "lib.hpp"
 
 class Map_Terminal
 {
@@ -16,7 +18,9 @@ class Map_Terminal
 		
 		Map_Terminal(){};
 		
-		void draw( const lux::GameMap & map );
+		void draw( const lux::GameMap & map ) const;
+		
+		void draw( const std::vector<lib::mapTrees> & ) const;
 	
 };
 

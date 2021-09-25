@@ -1,5 +1,6 @@
 
 #include "lib.hpp"
+#include "map_terminal.hpp"
 
 using namespace lib;
 
@@ -23,7 +24,7 @@ const lux::CityTile * lib::whereNearestCityTile( const lux::Unit & un, const std
 	
 	float closestdist = 999999;
 	
-	const lux::CityTile * closestcitytile;
+	const lux::CityTile * closestcitytile = nullptr;
 	
 	for ( auto &citytile : citi.citytiles )
 	{
@@ -100,16 +101,33 @@ lux::Position lib::emptyCityTile( lux::City & cit, lux::Position & pos )
 	return lux::Position();
 }
 
-void TileOccupy::push( const lux::Unit & uni)
+/*
+ * Class TileOccuppied
+ * 
+ * */
+
+bool TileOccuppied::push( const lux::Unit & uni)
 {
-	spaceOccupy.insert( {uni.id, uni.pos} );
+	
+	if ( empty( uni.pos ) )
+	{
+		spaceOccuppied.insert( {uni.id, uni.pos} );
+		return true;
+	}
+	return false;
 }
 
-bool TileOccupy::empty( lux::Position & pos )
+bool TileOccuppied::empty( const lux::Position & pos )
 {
-	for ( auto it = spaceOccupy.begin(); it != spaceOccupy.end(); ++it )
+	for ( auto it = spaceOccuppied.begin(); it != spaceOccuppied.end(); ++it )
 	{
-		if (pos == it->second)
+		if ( it->second == pos )
+			return false;
+	}
+	
+	for ( auto it = spaceOccuppiedNext.begin(); it != spaceOccuppiedNext.end(); ++it )
+	{
+		if ( it->second == pos )
 			return false;
 	}
 	
@@ -117,9 +135,21 @@ bool TileOccupy::empty( lux::Position & pos )
 	
 }
 
+void TileOccuppied::update()
+{
+	spaceOccuppiedNext = spaceOccuppied;
+}
+
+/*
+ * Class TileOccuppied END
+ * */
+
+
+int lib::mapTrees::amount = 0;
+
 const lux::Cell * lib::bestTreeMining( const lux::GameMap & gameMap, const std::vector<lux::Cell *> & trees, const lux::Unit & unit)
 {
-	const lux::Cell * closestTree;
+	const lux::Cell * closestTree = nullptr;
 	float closestDist = 9999999;
 	
 	for (auto it = trees.begin(); it != trees.end(); it++)
@@ -139,7 +169,7 @@ const lux::Cell * lib::bestTreeMining( const lux::GameMap & gameMap, const std::
 		tree.tile = closestTree;
 		tree.dist = closestDist;
 		tree.value = 1;
-		tree.amount = 1;
+		tree.amount += 1;
 	
 	treeMap.push_back( tree );
 	
@@ -154,7 +184,11 @@ const lux::Cell * lib::bestTreeMining( const lux::GameMap & gameMap, const std::
 			closestTree = treeMap[k].tile;
 		}
 	}
-
+	
+	Map_Terminal mapa;
+	mapa.draw( treeMap );
+	
+	
 	return closestTree;
 	
 }
@@ -176,7 +210,7 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 	for ( int i = 0; i < 4; ++i )
 	{
 		lux::Position tPos = mt.tile->pos;
-		const lux::Cell * tCell;
+		const lux::Cell * tCell = nullptr;
 		switch (i)
 		{
 			case 0:

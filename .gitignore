@@ -4,3 +4,7 @@ Dockerfile
 *.gz
 *.[aos]
 *.gch
+*.out
+/replays
+/bot*
+/*.txt

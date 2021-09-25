@@ -5,7 +5,7 @@
 #include <set>
 #include <stdio.h>
 
-#include ".Lux-lib/lib.hpp"
+#include "./lux-lib/lib.hpp"
 
 using namespace std;
 using namespace lux;
@@ -14,6 +14,8 @@ int main()
   kit::Agent gameState = kit::Agent();
   // initialize
   gameState.initialize();
+
+	lib::TileOccuppied tileOccup;
 
   while (true)
   {
@@ -42,11 +44,15 @@ int main()
         {
           resourceTiles.push_back(cell);
         }
+        if (cell->resource.type == ResourceType::wood)
+        {
+			resourceTilesTrees.push_back(cell);
+		}
       }
     }
 
     // we iterate over all our units and do something with them
-    for (int i = 0; i < player.units.size(); i++)
+    for ( unsigned int i = 0; i < player.units.size(); i++)
     {
       Unit unit = player.units[i];
       if (unit.isWorker() && unit.canAct())
@@ -54,23 +60,28 @@ int main()
         if (unit.getCargoSpaceLeft() > 0)
         {
           // if the unit is a worker and we have space in cargo, lets find the nearest resource tile and try to mine it
-          Cell *closestResourceTile;
-          float closestDist = 9999999;
-          for (auto it = resourceTiles.begin(); it != resourceTiles.end(); it++)
-          {
-            auto cell = *it;
-            if (cell->resource.type == ResourceType::coal && !player.researchedCoal()) continue;
-            if (cell->resource.type == ResourceType::uranium && !player.researchedUranium()) continue;
-            float dist = cell->pos.distanceTo(unit.pos);
-            if (dist < closestDist)
-            {
-              closestDist = dist;
-              closestResourceTile = cell;
-            }
-          }
+          const Cell *closestResourceTile = lib::bestTreeMining( gameState.map, resourceTilesTrees, unit );
+/*
+float closestDist = 9999999;
+for (auto it = resourceTiles.begin(); it != resourceTiles.end(); it++)
+{
+auto cell = *it;
+if (cell->resource.type == ResourceType::coal && !player.researchedCoal()) continue;
+if (cell->resource.type == ResourceType::uranium && !player.researchedUranium()) continue;
+float dist = cell->pos.distanceTo(unit.pos);
+if (dist < closestDist)
+{
+  closestDist = dist;
+  closestResourceTile = cell;
+}
+}
+*/
           if (closestResourceTile != nullptr)
           {
             auto dir = unit.pos.directionTo(closestResourceTile->pos);
+            
+            
+            
             actions.push_back(unit.move(dir));
           }
         }
@@ -83,7 +94,7 @@ int main()
             auto &city = city_iter->second;
 
             float closestDist = 999999;
-            CityTile *closestCityTile;
+            CityTile *closestCityTile = nullptr;
             for (auto &citytile : city.citytiles)
             {
               float dist = citytile.pos.distanceTo(unit.pos);
@@ -109,7 +120,7 @@ int main()
     /** AI Code Goes Above! **/
 
     /** Do not edit! **/
-    for (int i = 0; i < actions.size(); i++)
+    for ( unsigned int i = 0; i < actions.size(); i++)
     {
       if (i != 0)
         cout << ",";
