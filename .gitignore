@@ -8,3 +8,6 @@ Dockerfile
 /replays
 /bot*
 /*.txt
+/errorlogs
+brudnopis.cpp
+brudnopi

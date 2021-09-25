@@ -152,7 +152,7 @@ const lux::Cell * lib::bestTreeMining( const lux::GameMap & gameMap, const std::
 	const lux::Cell * closestTree = nullptr;
 	float closestDist = 9999999;
 	
-	for (auto it = trees.begin(); it != trees.end(); it++)
+	for (auto it = trees.begin(); it != trees.end(); ++it)
 	{
 		auto cell = *it;
 		float dist = cell->pos.distanceTo(unit.pos);
@@ -173,7 +173,7 @@ const lux::Cell * lib::bestTreeMining( const lux::GameMap & gameMap, const std::
 	
 	treeMap.push_back( tree );
 	
-	lib::exploreForest( gameMap, treeMap, tree, unit );
+	lib::exploreForest( gameMap, treeMap, *(treeMap.begin()), unit );
 	
 	int higherValue = -1;
 	for ( unsigned int k = 0; k < treeMap.size(); ++k )
@@ -206,110 +206,131 @@ bool lib::isRecorded( std::vector<lib::mapTrees> & vmt, const lux::Cell * cl )
 
 void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & vmt, lib::mapTrees & mt, const lux::Unit & un )
 {
-	
+	static std::ofstream Mapka("copiszczy.txt");
+	Mapka << '\n';
 	for ( int i = 0; i < 4; ++i )
 	{
+		
+		Mapka << std::to_string(i) << " ";
 		lux::Position tPos = mt.tile->pos;
 		const lux::Cell * tCell = nullptr;
 		switch (i)
 		{
 			case 0:
-			
+			{
 				tPos.y -= 1;
 				
 				tCell = gm.getCellByPos( tPos );
 				
-				if ( tCell->resource.type == lux::ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				if ( tCell->resource.type == lux::ResourceType::wood )
 				{
-					lib::mapTrees tree;
-						tree.tile = tCell;
-						tree.dist = tCell->pos.distanceTo(un.pos);
-						tree.value = 1;
-						tree.amount += 1;
-						
-					vmt.push_back(tree);
-					
 					mt.value += 1;
 					
-					
-					lib::exploreForest( gm, vmt, *(vmt.end()-1), un );
+					if ( isRecorded( vmt, tCell ) == false )
+					{
+						lib::mapTrees tree;
+							tree.tile = tCell;
+							tree.dist = tCell->pos.distanceTo(un.pos);
+							tree.value = 1;
+							tree.amount += 1;
+							
+						vmt.push_back(tree);
+						
+						lib::exploreForest( gm, vmt, (vmt.back()), un );
+						Mapka << "i after case 0=" + std::to_string(i) << " ";
+					}
 				}
-			
+			}
 			break;
 			
 			case 1:
-			
+			{
 				tPos.y += 1;
 				
 				tCell = gm.getCellByPos( tPos );
 				
-				if ( tCell->resource.type == lux::ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				if ( tCell->resource.type == lux::ResourceType::wood )
 				{
-					lib::mapTrees tree;
-						tree.tile = tCell;
-						tree.dist = tCell->pos.distanceTo(un.pos);
-						tree.value = 1;
-						tree.amount += 1;
-						
-					vmt.push_back(tree);
-					
 					mt.value += 1;
 					
-					exploreForest( gm, vmt, *(vmt.end() - 1), un );
+					if ( isRecorded( vmt, tCell ) == false )
+					{
+						lib::mapTrees tree;
+							tree.tile = tCell;
+							tree.dist = tCell->pos.distanceTo(un.pos);
+							tree.value = 1;
+							tree.amount += 1;
+							
+						vmt.push_back(tree);
+						
+						lib::exploreForest( gm, vmt, (vmt.back()), un );
+						Mapka << "i after case 1=" + std::to_string(i) << " ";
+					}
 				}
-				
+			}
 			break;
 			
 			case 2:
-			
+			{
 				tPos.x -= 1;
 				
 				tCell = gm.getCellByPos( tPos );
 				
-				if ( tCell->resource.type == lux::ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				if ( tCell->resource.type == lux::ResourceType::wood )
 				{
-					lib::mapTrees tree;
-						tree.tile = tCell;
-						tree.dist = tCell->pos.distanceTo(un.pos);
-						tree.value = 1;
-						tree.amount += 1;
-						
-					vmt.push_back(tree);
-					
 					mt.value += 1;
 					
-					exploreForest( gm, vmt, *(vmt.end() - 1), un );
+					if ( isRecorded( vmt, tCell ) == false )
+					{
+						lib::mapTrees tree;
+							tree.tile = tCell;
+							tree.dist = tCell->pos.distanceTo(un.pos);
+							tree.value = 1;
+							tree.amount += 1;
+							
+						vmt.push_back(tree);
+						
+						lib::exploreForest( gm, vmt, (vmt.back()), un );
+						Mapka << "i after case 2=" + std::to_string(i) << " ";
+					}
 				}
-				
+			}
 			break;
 			
 			case 3:
-			
+			{
 				tPos.x += 1;
 				
 				tCell = gm.getCellByPos( tPos );
 				
-				if ( tCell->resource.type == lux::ResourceType::wood && isRecorded( vmt, tCell ) == false )
+				if ( tCell->resource.type == lux::ResourceType::wood )
 				{
-					lib::mapTrees tree;
-						tree.tile = tCell;
-						tree.dist = tCell->pos.distanceTo(un.pos);
-						tree.value = 1;
-						tree.amount += 1;
-						
-					vmt.push_back(tree);
-					
 					mt.value += 1;
 					
-					exploreForest( gm, vmt, *(vmt.end() - 1), un );
+					if ( isRecorded( vmt, tCell ) == false )
+					{
+						lib::mapTrees tree;
+							tree.tile = tCell;
+							tree.dist = tCell->pos.distanceTo(un.pos);
+							tree.value = 1;
+							tree.amount += 1;
+							
+						vmt.push_back(tree);
+						
+						lib::exploreForest( gm, vmt, (vmt.back()), un );
+						Mapka << "i after case 3=" + std::to_string(i) << " ";
+					}
 				}
-				
+			}
 			break;
 			
 			default:
 			break;
 			
 		}
+		
 	}
+	Mapka.close();
+	return;
 }
 
