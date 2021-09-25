@@ -334,3 +334,8 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 	return;
 }
 
+void createUnit( lux::Player & player )
+{
+	
+	
+}
