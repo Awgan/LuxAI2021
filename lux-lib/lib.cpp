@@ -334,8 +334,29 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 	return;
 }
 
-void createUnit( lux::Player & player )
+void createUnit( lux::Player & player, const char ch )
 {
+	int unitNu = player.units.size();
+	int cityNu = player.cityTileCount;
 	
+	if ( unitNu >= cityNu )
+		return;
+	
+	int newUnits = cityNu - unitNu;
+	
+	if ( ch == 'u' )
+	{
+		//Create Unit
+		int created = 0;
+		
+		for( auto it = player.cities.begin(); it != player.cities.end() && created < newUnits; ++it )
+		{
+			
+		}
+	}
+	else if ( ch == 'c' )
+	{
+		//create cart
+	}
 	
 }

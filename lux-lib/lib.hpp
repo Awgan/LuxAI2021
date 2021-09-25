@@ -67,7 +67,7 @@ namespace lib
 		
 	};
 	
-	void createUnit( lux::Player & );
+	void createUnit( lux::Player &, const char );
 	
 };
 
