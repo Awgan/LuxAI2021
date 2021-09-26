@@ -5,7 +5,8 @@
 #include <set>
 #include <stdio.h>
 
-#include "./lux-lib/lib.hpp"
+#include "lux-lib/lib.hpp"
+
 
 using namespace std;
 using namespace lux;
@@ -116,6 +117,8 @@ if (dist < closestDist)
 
     // you can add debug annotations using the methods of the Annotate class.
     // actions.push_back(Annotate::circle(0, 0));
+
+		lib::research( player );
 
     /** AI Code Goes Above! **/
 

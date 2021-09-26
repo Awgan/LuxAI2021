@@ -334,3 +334,25 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 	return;
 }
 
+/*
+* Do research points
+* player - player object
+*/	
+void research( const lux::Player & player )
+{
+	// Iterator for  std::map<string, City> cities
+	for ( auto cit : player.cities )
+	{
+		// Iterator for std::vector<CityTile> citytiles
+		for ( auto citT : cit.second.citytiles )
+		{
+			//Check if it is possible to do research points
+			if ( citT.canAct() && player.researchPoints < (int)lux::GAME_CONSTANTS["PARAMETERS"]["RESEARCH_REQUIREMENTS"]["URANIUM"] )
+			{
+				citT.research();
+			}
+		}
+	}
+}
+
+
