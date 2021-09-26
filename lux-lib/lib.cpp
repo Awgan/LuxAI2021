@@ -334,7 +334,7 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 	return;
 }
 
-void createUnit( lux::Player & player, const char ch )
+void createUnit( lux::Player & player, const char ch, int limit )
 {
 	int unitNu = player.units.size();
 	int cityNu = player.cityTileCount;
@@ -349,7 +349,7 @@ void createUnit( lux::Player & player, const char ch )
 		//Create Unit
 		int created = 0;
 		
-		for ( auto it = player.cities.begin(); it != player.cities.end() && created < newUnits; ++it )
+		for ( auto it = player.cities.begin(); it != player.cities.end() || created < newUnits || created < limit; ++it )
 		{
 			auto iv = it->second.citytiles;
 			for ( uint i = 0 ; i < iv.size() && created < newUnits; ++i)
@@ -367,7 +367,7 @@ void createUnit( lux::Player & player, const char ch )
 		//create cart
 		int created = 0;
 		
-		for ( auto it = player.cities.begin(); it != player.cities.end() && created < newUnits; ++it )
+		for ( auto it = player.cities.begin(); it != player.cities.end() || created < newUnits || created || limit; ++it )
 		{
 			auto iv = it->second.citytiles;
 			for ( uint i = 0 ; i < iv.size() && created < newUnits; ++i)
