@@ -9,4 +9,4 @@ Dockerfile
 /bot*
 /*.txt
 /errorlogs
-
+*.sh
