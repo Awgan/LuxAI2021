@@ -67,7 +67,11 @@ namespace lib
 		
 	};
 	
+
 	void research(const lux::Player & player);
+
+	void createUnit( lux::Player &, const char, int );
+
 	
 };
 
