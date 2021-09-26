@@ -365,6 +365,20 @@ void createUnit( lux::Player & player, const char ch )
 	else if ( ch == 'c' )
 	{
 		//create cart
+		int created = 0;
+		
+		for ( auto it = player.cities.begin(); it != player.cities.end() && created < newUnits; ++it )
+		{
+			auto iv = it->second.citytiles;
+			for ( uint i = 0 ; i < iv.size() && created < newUnits; ++i)
+			{
+				if ( iv[i].canAct() )
+				{
+					iv[i].buildCart();
+					++created;
+				}
+			} 
+		}
 	}
 	
 }
