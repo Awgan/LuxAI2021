@@ -1,4 +1,4 @@
-*.sh
+.sh
 Dockerfile
 *.py
 *.gz
@@ -9,5 +9,4 @@ Dockerfile
 /bot*
 /*.txt
 /errorlogs
-brudnopis.cpp
-brudnopi
+
