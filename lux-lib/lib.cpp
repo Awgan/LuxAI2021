@@ -206,8 +206,17 @@ bool lib::isRecorded( std::vector<lib::mapTrees> & vmt, const lux::Cell * cl )
 
 void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & vmt, lib::mapTrees & mt, const lux::Unit & un )
 {
-	static std::ofstream Mapka("copiszczy.txt");
+	static int mmm = -1;/*
+	std::string name = "copiszczy" + std::to_string(mmm) + ".txt";
+	std::ofstream Mapka( name );
+	++mmm;*/
+	static std::ofstream Mapka("xxxcopiszczy.txt", std::ofstream::app);
+	
+	++mmm;
 	Mapka << '\n';
+	Mapka << "Rekurencja: " << mmm << '\n';
+	
+	
 	for ( int i = 0; i < 4; ++i )
 	{
 		
@@ -235,9 +244,11 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 							tree.amount += 1;
 							
 						vmt.push_back(tree);
-						
-						lib::exploreForest( gm, vmt, (vmt.back()), un );
-						Mapka << "i after case 0=" + std::to_string(i) << " ";
+						Mapka << "Rekurencja: " << mmm <<" CASE: " << i << " uruchamia następną rekurencję\n";
+						lib::exploreForest( gm, vmt, *(vmt.end()-1), un );
+						if ( !Mapka.is_open() )
+							Mapka.open("xxxcopiszczy.txt", std::ofstream::app);
+						Mapka << "po rekurencji w CASE: " << i << '\n';
 					}
 				}
 			}
@@ -262,9 +273,11 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 							tree.amount += 1;
 							
 						vmt.push_back(tree);
-						
-						lib::exploreForest( gm, vmt, (vmt.back()), un );
-						Mapka << "i after case 1=" + std::to_string(i) << " ";
+						Mapka << "Rekurencja: " << mmm <<" CASE: " << i << " uruchamia następną rekurencję\n";
+						lib::exploreForest( gm, vmt, *(vmt.end()-1), un );
+						if ( !Mapka.is_open() )
+							Mapka.open("xxxcopiszczy.txt", std::ofstream::app);
+						Mapka << "po rekurencji w CASE: " << i << '\n';
 					}
 				}
 			}
@@ -289,9 +302,11 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 							tree.amount += 1;
 							
 						vmt.push_back(tree);
-						
-						lib::exploreForest( gm, vmt, (vmt.back()), un );
-						Mapka << "i after case 2=" + std::to_string(i) << " ";
+						Mapka << "Rekurencja: " << mmm <<" CASE: " << i << " uruchamia następną rekurencję\n";
+						lib::exploreForest( gm, vmt, *(vmt.end()-1), un );
+						if ( !Mapka.is_open() )
+							Mapka.open("xxxcopiszczy.txt", std::ofstream::app);
+						Mapka << "po rekurencji w CASE: " << i << '\n';
 					}
 				}
 			}
@@ -316,9 +331,11 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 							tree.amount += 1;
 							
 						vmt.push_back(tree);
-						
-						lib::exploreForest( gm, vmt, (vmt.back()), un );
-						Mapka << "i after case 3=" + std::to_string(i) << " ";
+						Mapka << "Rekurencja: " << mmm <<" CASE: " << i << " uruchamia następną rekurencję\n";
+						lib::exploreForest( gm, vmt, *(vmt.end()-1), un );
+						if ( !Mapka.is_open() )
+							Mapka.open("xxxcopiszczy.txt", std::ofstream::app);
+						Mapka << "po rekurencji w CASE: " << i << '\n';
 					}
 				}
 			}
@@ -330,6 +347,7 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 		}
 		
 	}
+	Mapka << "\nkoniec\n";
 	Mapka.close();
 	return;
 }

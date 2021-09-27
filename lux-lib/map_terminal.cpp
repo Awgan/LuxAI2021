@@ -62,13 +62,15 @@ void Map_Terminal::draw( const lux::GameMap & map ) const
 void Map_Terminal::draw( const std::vector<lib::mapTrees> & vmt ) const
 {
 	static int no = 0;
-	std::string fileName = "mapkaDrzew" + std::to_string(no) + ".txt";
+	std::string fileName = "drzewMapka" + std::to_string(no) + ".txt";
 	
 	std::ofstream Mapka(fileName);
 	
+	Mapka << "vector size: " << vmt.size() << '\n';
+	
 	for( auto it : vmt )
 	{
-		lux::Position pos = it.tile->pos;
+		lux::Position pos = it.tile->pos;		
 		Mapka << "(" << pos.x << ";" << pos.y << ")" << '\t';
 		Mapka << "v:" << it.value << '\t';
 		Mapka << "d:" << it.dist << '\t';
