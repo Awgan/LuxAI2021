@@ -64,20 +64,23 @@ void Map_Terminal::draw( const std::vector<lib::mapTrees> & vmt ) const
 	static int no = 0;
 	std::string fileName = "drzewMapka" + std::to_string(no) + ".txt";
 	
-	std::ofstream Mapka(fileName);
+	std::ofstream Mapka(fileName, std::ofstream::app);
+	if( !Mapka.is_open() )
+		Mapka.open(fileName, std::ofstream::app);
 	
-	Mapka << "vector size: " << vmt.size() << '\n';
+	Mapka << "vector size: " << std::to_string(vmt.size()) << '\n';
 	
 	for( auto it : vmt )
 	{
-		lux::Position pos = it.tile->pos;		
-		Mapka << "(" << pos.x << ";" << pos.y << ")" << '\t';
-		Mapka << "v:" << it.value << '\t';
-		Mapka << "d:" << it.dist << '\t';
-		Mapka << "a:" << it.amount << '\n';
+		lux::Position pos = it.tile->pos;
+		Mapka << "(" << std::to_string(pos.x) << ";" << std::to_string(pos.y) << ")" << '\t';
+		Mapka << "v:" << std::to_string(it.value) << '\t';
+		Mapka << "d:" << std::to_string(it.dist) << '\t';
+		Mapka << "a:" << std::to_string(it.amount) << '\n';
 		
 	}
 	Mapka.close();
+	/**/
 	++no;
 }
 
