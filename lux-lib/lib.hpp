@@ -74,6 +74,34 @@ namespace lib
 	void buildCity( lux::GameMap &, lux::Player &, std::vector<std::string> &, lux::Unit & );
 
 
+	class MissionRegister
+	{
+		public:
+			std::vector<std::string> unitID;
+			std::vector<lux::Position> target;
+			std::vector<char> mission;
+
+			MissionRegister() : unitID(20), target(20), mission(20)
+			{}
+
+			MissionRegister(const MissionRegister &){}
+
+			~MissionRegister()
+			{}
+
+			bool pushBack( std::string &, lux::Position &, char );
+
+			bool isRegistered( std::string & )
+
+			char getMission( std::string & );
+
+			lux::Position getTarget( std::string & );
+
+			MissionRegister & operator[](int);
+
+	};
+
+
 };
 
 
