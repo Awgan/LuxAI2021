@@ -10,3 +10,4 @@ Dockerfile
 /*.txt
 /errorlogs
 *.sh
+*.ods*
