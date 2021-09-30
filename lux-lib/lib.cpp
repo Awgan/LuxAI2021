@@ -188,20 +188,52 @@ const lux::Cell * lib::bestTreeMining( const lux::GameMap & gameMap, const std::
 
 	treeMap.push_back( tree );
 
+
+
 	lib::exploreForest( gameMap, treeMap, *(treeMap.end()-1), unit );
 
+
+
 	int higherValue = -1;
+	int shorterDist = 999;
+	lux::CityTile * isInCity = gameMap.getCellByPos(unit.pos)->citytile;
+	bool hasResource = gameMap.getCellByPos(unit.pos)->hasResource();
 
 	for ( unsigned int k = 0; k < treeMap.size(); ++k )
 	{
-		if ( treeMap[k].value > higherValue  )
+		if ( hasResource && treeMap[k].dist == 0 )
 		{
+			//Unit is at Tree Tile
 			higherValue = treeMap[k].value;
 			closestTree = treeMap[k].tile;
 			break;
 		}
+		else if ( isInCity != nullptr && treeMap[k].dist == 1 )
+		{
+			//Unit is at City Tile
+			if ( treeMap[k].value > higherValue  )
+			{
+				higherValue = treeMap[k].value;
+				closestTree = treeMap[k].tile;
+				shorterDist = treeMap[k].dist;
+			}
+		}
+		else
+		{
+			if ( treeMap[k].dist < shorterDist )
+			{
+				shorterDist = treeMap[k].dist;
+				higherValue = treeMap[k].value;
+				closestTree = treeMap[k].tile;
+			}
+
+			//TODO: Need to build new city when dist is much more than 1 !!
+			//return nullptr;
+		}
 	}
-	lux::Annotate comm;
+
+
+
 	lux::Annotate::sidetext( "Best Tree: " + std::to_string(closestTree->pos.x) + "," + std::to_string(closestTree->pos.x) );
 
 	return closestTree;
@@ -408,7 +440,7 @@ void lib::createUnit( lux::Player & player, std::vector<std::string> & act, cons
 	{
 		//Create Unit
 		int created = 0;
-		
+
 		for ( auto it = player.cities.begin(); it != player.cities.end() || created < newUnits || created < limit; ++it )
 		{
 			auto iv = it->second.citytiles;
@@ -446,10 +478,10 @@ void lib::buildCity( lux::GameMap & map, lux::Player & player, std::vector<std::
 {
 	int citiesNu = player.cityTileCount;
 	int unitNu = player.units.size();
-	
+
 	if ( unitNu >= citiesNu )
 		return;
-	
+
 	if ( unit.canBuild( map ) )
 	{
 		act.push_back( unit.buildCity() );
