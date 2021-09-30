@@ -194,12 +194,15 @@ const lux::Cell * lib::bestTreeMining( const lux::GameMap & gameMap, const std::
 
 	for ( unsigned int k = 0; k < treeMap.size(); ++k )
 	{
-		if ( treeMap[k].value > higherValue )
+		if ( treeMap[k].value > higherValue  )
 		{
 			higherValue = treeMap[k].value;
 			closestTree = treeMap[k].tile;
+			break;
 		}
 	}
+	lux::Annotate comm;
+	lux::Annotate::sidetext( "Best Tree: " + std::to_string(closestTree->pos.x) + "," + std::to_string(closestTree->pos.x) );
 
 	return closestTree;
 }
@@ -358,18 +361,23 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 * Do research points
 * player - player object
 */
-void research( const lux::Player & player )
+void lib::research( const lux::Player & player, std::vector<std::string> & act )
 {
+	lux::Annotate comm;
+	lux::Annotate::sidetext("#Function Research: ENTERED");
 	// Iterator for  std::map<string, City> cities
 	for ( auto cit : player.cities )
 	{
+		comm.sidetext("#Function Research: FIRST FOR");
 		// Iterator for std::vector<CityTile> citytiles
 		for ( auto citT : cit.second.citytiles )
 		{
+			comm.sidetext("#Function Research: SECOND FOR");
 			//Check if it is possible to do research points
-			if ( citT.canAct() && player.researchPoints < (int)lux::GAME_CONSTANTS["PARAMETERS"]["RESEARCH_REQUIREMENTS"]["URANIUM"] )
+			if ( citT.canAct() && player.researchPoints < 200 /*(int)lux::GAME_CONSTANTS["PARAMETERS"]["RESEARCH_REQUIREMENTS"]["URANIUM"]*/ )
 			{
-				citT.research();
+				act.push_back( citT.research() );
+				lux::Annotate::sidetext("#Function Research: RESEARCHED DONE");
 			}
 		}
 	}
@@ -383,7 +391,7 @@ void research( const lux::Player & player )
  * 			'c'	-> cart
  * limit - indicate how many units build
  */
-void createUnit( lux::Player & player, const char ch, int limit )
+void lib::createUnit( lux::Player & player, std::vector<std::string> & act, const char ch, int limit )
 {
 	int unitNu = player.units.size();
 	int cityNu = player.cityTileCount;
@@ -400,7 +408,7 @@ void createUnit( lux::Player & player, const char ch, int limit )
 	{
 		//Create Unit
 		int created = 0;
-
+		
 		for ( auto it = player.cities.begin(); it != player.cities.end() || created < newUnits || created < limit; ++it )
 		{
 			auto iv = it->second.citytiles;
@@ -408,7 +416,7 @@ void createUnit( lux::Player & player, const char ch, int limit )
 			{
 				if ( iv[i].canAct() )
 				{
-					iv[i].buildWorker();
+					act.push_back( iv[i].buildWorker() );
 					++created;
 				}
 			}
@@ -426,7 +434,7 @@ void createUnit( lux::Player & player, const char ch, int limit )
 			{
 				if ( iv[i].canAct() )
 				{
-					iv[i].buildCart();
+					act.push_back( iv[i].buildCart() );
 					++created;
 				}
 			}
@@ -434,3 +442,16 @@ void createUnit( lux::Player & player, const char ch, int limit )
 	}
 }
 
+void lib::buildCity( lux::GameMap & map, lux::Player & player, std::vector<std::string> & act, lux::Unit & unit)
+{
+	int citiesNu = player.cityTileCount;
+	int unitNu = player.units.size();
+	
+	if ( unitNu >= citiesNu )
+		return;
+	
+	if ( unit.canBuild( map ) )
+	{
+		act.push_back( unit.buildCity() );
+	}
+}
