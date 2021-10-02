@@ -445,3 +445,53 @@ void lib::buildCity( lux::GameMap & map, lux::Player & player, std::vector<std::
 		act.push_back( unit.buildCity() );
 	}
 }
+
+void lib::move( lux::Unit & uni, lux::DIRECTIONS & dir, std::vector<std::string> & act, lib::TileOccuppied & til )
+{
+	lux::Position target = uni.pos;
+
+	switch(dir)
+	{
+		case lux::DIRECTIONS::NORTH:
+		{
+			target.y -= 1;
+		}
+		break;
+		case lux::DIRECTIONS::EAST:
+		{
+			target.x += 1;
+		}
+		break;
+		case lux::DIRECTIONS::SOUTH:
+		{
+			target.y += 1;
+		}
+		break;
+		case lux::DIRECTIONS::WEST:
+		{
+			target.x -= 1;
+		}
+		break;
+		case lux::DIRECTIONS::CENTER˙:
+		{
+			//stay
+		}
+		break;
+		default:
+		break;
+	}
+
+	if ( til.empty( target ) )
+	{
+		//go
+		til.push( uni );
+		act.push_back( uni.move(dir) );
+	}
+	else
+	{
+		//wait
+		til.push( uni );
+		act.push_back( uni.move( lux::DIRECTIONS::CENTER ) );
+	}
+}
+

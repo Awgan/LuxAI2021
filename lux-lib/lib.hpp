@@ -2,6 +2,7 @@
 #define LIB_LUX_HPP
 
 #include "../lux/kit.hpp"
+#include "tile_occu.hpp"
 
 
 namespace lib
@@ -46,11 +47,13 @@ namespace lib
 	};
 
 
-	void research(const lux::Player & player, std::vector<std::string> &);
+	void research( const lux::Player & player, std::vector<std::string> & );
 
 	void createUnit( lux::Player &, std::vector<std::string> &, const char, int );
 
 	void buildCity( lux::GameMap &, lux::Player &, std::vector<std::string> &, lux::Unit & );
+
+	void move( lux::Unit &, lux::DIRECTIONS &, std::vector<std::string> &, lib::TileOccuppied & );
 
 
 };

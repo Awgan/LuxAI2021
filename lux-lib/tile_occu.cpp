@@ -2,11 +2,43 @@
 #include "tile_occu.hpp"
 
 
-bool TileOccuppied::push( const lux::Unit & uni)
+bool TileOccuppied::push( const lux::Unit & uni, const lux::DIRECTIONS & dir )
 {
 	if ( empty( uni.pos ) )
 	{
-		spaceOccuppied.insert( {uni.id, uni.pos} );
+		lux::Position target = uni.pos;
+		switch(dir)
+		{
+			case lux::DIRECTIONS::NORTH:
+			{
+				target.y -= 1;
+			}
+			break;
+			case lux::DIRECTIONS::EAST:
+			{
+				target.x += 1;
+			}
+			break;
+			case lux::DIRECTIONS::SOUTH:
+			{
+				target.y += 1;
+			}
+			break;
+			case lux::DIRECTIONS::WEST:
+			{
+				target.x -= 1;
+			}
+			break;
+			case lux::DIRECTIONS::CENTER˙:
+			{
+				//nothing
+			}
+			break;
+			default:
+			break;
+		}
+
+		spaceOccuppied.insert( {uni.id, target} );
 		return true;
 	}
 	return false;

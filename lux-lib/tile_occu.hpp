@@ -24,7 +24,7 @@ class TileOccuppied
 		~TileOccuppied()
 		{}
 
-		bool push( const lux::Unit & uni );
+		bool push( const lux::Unit & uni, const lux::Position & dir );
 
 		bool empty( const lux::Position & pos );
 
