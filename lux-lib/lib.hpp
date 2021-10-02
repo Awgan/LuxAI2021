@@ -55,7 +55,13 @@ namespace lib
 
 	void move( lux::Unit &, lux::DIRECTIONS &, std::vector<std::string> &, lib::TileOccuppied & );
 
-
+//NEW
+//Methode for building city around forest
+//Assume that there is special worker for building only
+	lux::Cell * buildCitySurroundForest( lux::Player &, std::vector<lib::mapTrees *> &, lux::Unit & );
+//Best tile for build city. Place must be 3? distance from previous city and should be placed
+//such that one move from city gives the best harvest
+	lux::Cell * bestTileForCity();
 };
 
 

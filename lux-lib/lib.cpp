@@ -248,7 +248,7 @@ void lib::exploreForest( const lux::GameMap & gm, std::vector<lib::mapTrees> & v
 
 						vmt.push_back(tree);
 
-						lib::exploreForest( gm, vmt, (vmt.back()), un );
+						//lib::exploreForest( gm, vmt, (vmt.back()), un );
 
 						lib::exploreForest( gm, vmt, *(vmt.end()-1), un );
 					}
@@ -495,3 +495,24 @@ void lib::move( lux::Unit & uni, lux::DIRECTIONS & dir, std::vector<std::string>
 	}
 }
 
+lux::Cell * lib::buildCitySurroundForest( lux::Player & pla, std::vector<lib::mapTrees *> & vMapTrees, lux::Unit & uni )
+{
+	//czy moze budować
+
+	//jeżeli nie może budować, to idzie do nowego miejsca
+	//jeżeli może to też idzie, wazne żeby zszedł z miasta
+
+	//znajdź następne miejsce
+	lux::Position uPos = uni.pos;
+
+	lux::DIRECTIONS forestDir = lux::DIRECTIONS::CENTER;
+
+	//oblicz zwrot w którym rozbudowuje się las
+	for ( int i = 0; i < vMapTrees.size(); ++i )
+	{
+
+	}
+
+	//return komorkę, którą zapiszemy w zbiorze misji
+
+}
