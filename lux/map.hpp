@@ -26,7 +26,7 @@ namespace lux
         lux::CityTile * citytile;
         float road = 0.0;
         Cell(){};
-        Cell(int x, int y):citytile(nullptr)
+        Cell(int x, int y)
         {
             pos = Position(x, y);
         };
