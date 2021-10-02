@@ -21,27 +21,6 @@ namespace lib
 
 	lux::Position emptyCityTile( lux::City & cit, lux::Position & pos );
 
-	/*
-	 * Save occuppied cells, check if there is free cell
-	 * It is for avoiding collision between Units.
-	 * */
-	class TileOccuppied
-	{
-		private:
-			std::map<std::string, lux::Position> spaceOccuppied;
-			std::map<std::string, lux::Position> spaceOccuppiedNext;
-
-		public:
-
-			TileOccuppied(){}
-
-			bool push( const lux::Unit & uni );
-
-			bool empty( const lux::Position & pos );
-
-			void update();
-	};
-
 	struct mapTrees
 	{
 		const lux::Cell * tile;	//pointer to Cell
