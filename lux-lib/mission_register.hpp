@@ -15,7 +15,10 @@ class MissionRegister
 			MissionRegister() : unitID(20), target(20), mission(20)
 			{}
 
-			MissionRegister(const MissionRegister &){}
+			MissionRegister( std::string &, lux::Position &, char );
+
+			MissionRegister(const MissionRegister &)
+			{}
 
 			~MissionRegister()
 			{}
@@ -28,8 +31,8 @@ class MissionRegister
 
 			lux::Position getTarget( std::string & );
 
-			MissionRegister & operator[](int);
+			MissionRegister operator[](int);
 
 	};
-	
+
 #endif
