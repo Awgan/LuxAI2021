@@ -6,7 +6,6 @@ Dockerfile
 *.gch
 *.out
 /replays
-/bot*
 /*.txt
 /errorlogs
 *.sh
