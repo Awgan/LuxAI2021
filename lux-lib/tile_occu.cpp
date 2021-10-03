@@ -2,7 +2,7 @@
 #include "tile_occu.hpp"
 
 
-bool TileOccuppied::push( const lux::Unit & uni, const lux::DIRECTIONS & dir )
+bool lib::TileOccuppied::push( const lux::Unit & uni, const lux::DIRECTIONS & dir )
 {
 	if ( empty( uni.pos ) )
 	{
@@ -29,7 +29,7 @@ bool TileOccuppied::push( const lux::Unit & uni, const lux::DIRECTIONS & dir )
 				target.x -= 1;
 			}
 			break;
-			case lux::DIRECTIONS::CENTER˙:
+			case lux::DIRECTIONS::CENTER:
 			{
 				//nothing
 			}
@@ -44,7 +44,7 @@ bool TileOccuppied::push( const lux::Unit & uni, const lux::DIRECTIONS & dir )
 	return false;
 }
 
-bool TileOccuppied::empty( const lux::Position & pos )
+bool lib::TileOccuppied::empty( const lux::Position & pos )
 {
 	for ( auto it = spaceOccuppied.begin(); it != spaceOccuppied.end(); ++it )
 	{
@@ -63,7 +63,7 @@ bool TileOccuppied::empty( const lux::Position & pos )
 	return true;
 }
 
-void TileOccuppied::update()
+void lib::TileOccuppied::update()
 {
 	spaceOccuppiedNext.clear();
 	spaceOccuppiedNext = spaceOccuppied;

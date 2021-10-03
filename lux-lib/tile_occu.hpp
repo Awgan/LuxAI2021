@@ -9,26 +9,27 @@
  * Save occuppied cells, check if there is free cell
  * It is for avoiding collision between Units.
  * */
-
-class TileOccuppied
+namespace lib
 {
-	private:
-		std::map<std::string, lux::Position> spaceOccuppied;
-		std::map<std::string, lux::Position> spaceOccuppiedNext;
+	class TileOccuppied
+	{
+		private:
+			std::map<std::string, lux::Position> spaceOccuppied;
+			std::map<std::string, lux::Position> spaceOccuppiedNext;
 
-	public:
+		public:
 
-		TileOccuppied()
-		{}
+			TileOccuppied()
+			{}
 
-		~TileOccuppied()
-		{}
+			~TileOccuppied()
+			{}
 
-		bool push( const lux::Unit & uni, const lux::Position & dir );
+			bool push( const lux::Unit &, const lux::DIRECTIONS & );
 
-		bool empty( const lux::Position & pos );
+			bool empty( const lux::Position & );
 
-		void update();
-};
-
+			void update();
+	};
+}
 #endif
