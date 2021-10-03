@@ -472,7 +472,7 @@ void lib::move( lux::Unit & uni, lux::DIRECTIONS & dir, std::vector<std::string>
 			target.x -= 1;
 		}
 		break;
-		case lux::DIRECTIONS::CENTER˙:
+		case lux::DIRECTIONS::CENTER:
 		{
 			//stay
 		}
@@ -484,35 +484,163 @@ void lib::move( lux::Unit & uni, lux::DIRECTIONS & dir, std::vector<std::string>
 	if ( til.empty( target ) )
 	{
 		//go
-		til.push( uni );
+		til.push( uni, dir );
 		act.push_back( uni.move(dir) );
 	}
 	else
 	{
 		//wait
-		til.push( uni );
+		til.push( uni, dir );
 		act.push_back( uni.move( lux::DIRECTIONS::CENTER ) );
 	}
 }
 
-lux::Cell * lib::buildCitySurroundForest( lux::Player & pla, std::vector<lib::mapTrees *> & vMapTrees, lux::Unit & uni )
+lux::Cell * lib::findCellForCityForest( lux::GameMap & gMap, std::vector<lib::mapTrees *> & vMapTrees )
 {
-	//czy moze budować
+	int maxCity = vMapTrees.size() / 3;
+	int presentCity = 0;
+	std::vector<lux::Cell *> mapCity(10);
+	std::vector<lux::Cell *> freeTile(20);
 
-	//jeżeli nie może budować, to idzie do nowego miejsca
-	//jeżeli może to też idzie, wazne żeby zszedł z miasta
-
-	//znajdź następne miejsce
-	lux::Position uPos = uni.pos;
-
-	lux::DIRECTIONS forestDir = lux::DIRECTIONS::CENTER;
-
-	//oblicz zwrot w którym rozbudowuje się las
-	for ( int i = 0; i < vMapTrees.size(); ++i )
+	/*
+	 * Find out how many city is near the forest
+	 */
+	for ( uint i = 0; i < vMapTrees.size(); ++i )
 	{
+		for ( int j = 0; j < 4; ++j )
+		{
+			lux::Position pos = vMapTrees[i]->tile->pos;
 
+			switch(j)
+			{
+				case 0:
+				pos.x -= 1;
+				break;
+
+				case 1:
+				pos.x += 1;
+				break;
+
+				case 2:
+				pos.y -= 1;
+				break;
+
+				case 3:
+				pos.y += 1;
+				break;
+
+				default:
+				break;
+			}
+
+			if ( gMap.getCellByPos( pos )->citytile != nullptr )
+			{
+				mapCity.push_back( gMap.getCellByPos( pos ) );
+				++presentCity;
+			}
+			else if ( !gMap.getCellByPos( pos )->hasResource() )
+			{
+				freeTile.push_back( gMap.getCellByPos( pos ) );
+			}
+		}
 	}
 
-	//return komorkę, którą zapiszemy w zbiorze misji
+	if ( presentCity > maxCity )
+	{
+		/*
+		 * End as there is enough citytile
+		 */
+		return nullptr;
+	}
+
+	/*
+	 * Find Cell which is 3 tille far from last city and is free and is near forest
+	 */
+	lux::Cell * bestCell = nullptr;
+
+	for ( uint i = 0; i < mapCity.size() && bestCell == nullptr; ++i )
+	{		
+		for ( int j = 0; j < 12 && bestCell == nullptr; ++j )
+		{
+			lux::Position pos = mapCity[i]->pos;
+
+			switch (j)
+			{
+				case 0:
+				//pos.x += 0;
+				pos.y -= 3;
+				break;
+
+				case 1:
+				pos.x += 1;
+				pos.y -= 2;
+				break;
+
+				case 2:
+				pos.x += 2;
+				pos.y -= 1;
+				break;
+
+				case 3:
+				pos.x += 3;
+				//pos.y -= 0;
+				break;
+
+				case 4:
+				pos.x += 2;
+				pos.y += 1;
+				break;
+
+				case 5:
+				pos.x += 1;
+				pos.y += 2;
+				break;
+
+				case 6:
+				//pos.x += 0;
+				pos.y += 3;
+				break;
+
+				case 7:
+				pos.x -= 1;
+				pos.y += 2;
+				break;
+
+				case 8:
+				pos.x -= 2;
+				pos.y += 1;
+				break;
+
+				case 9:
+				pos.x -= 3;
+				//pos.y += 0;
+				break;
+
+				case 10:
+				pos.x -= 2;
+				pos.y -= 1;
+				break;
+
+				case 11:
+				pos.x -= 1;
+				pos.y -= 2;
+				break;
+
+				default:
+				break;
+			}
+
+			for ( uint k = 0; k < freeTile.size() && bestCell == nullptr; ++k )
+			{
+
+				if ( freeTile[k] == gMap.getCellByPos( pos ) )
+				{
+					bestCell = freeTile[k];
+				}
+			}
+		}
+	}
+
+return bestCell;
 
 }
